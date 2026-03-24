@@ -27,10 +27,10 @@ export default function App() {
   setPage(1);
  };
 
-  useEffect(() => {{
+  useEffect(() => {
     if(isSuccess && data?.results.length === 0){
 toast.error('No movies found for your request.');
- }}},[isSuccess, data])
+ }},[isSuccess, data]);
 
   const handleMovie = (movie:Movie) => {
   setSelectedMovie(movie);
