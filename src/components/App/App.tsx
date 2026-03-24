@@ -13,17 +13,17 @@ import Pagination from '../ReactPaginate/ReactPaginate';
 
 export default function App() { 
   const [page, setPage] = useState(1);
-   const [searchFilm, setSearchFilm] = useState('');
+   const [searchQuery, setSearchQuery] = useState('');
    const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
     const { data, isLoading, isError, isSuccess } = useQuery({ 
-    queryKey: ['films', searchFilm, page ],
-    queryFn: () => fetchMovies(searchFilm, page),
-   enabled: searchFilm !== "",
+    queryKey: ['films', searchQuery, page ],
+    queryFn: () => fetchMovies(searchQuery, page),
+   enabled: searchQuery !== "",
     placeholderData: keepPreviousData,
   });
 
   const handleSearch = (queryValue: string) => {
-   setSearchFilm(queryValue);
+   setSearchQuery(queryValue);
   setPage(1);
  };
 
