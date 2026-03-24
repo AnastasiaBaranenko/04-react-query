@@ -1,6 +1,6 @@
-import { useState} from 'react';
+import {useEffect, useState} from 'react';
 import { useQuery,keepPreviousData } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import css from './App.module.css';
 import SearchBar from '../SearchBar/SearchBar';
 import { fetchMovies } from '../../services/movieService';
@@ -15,7 +15,7 @@ export default function App() {
   const [page, setPage] = useState(1);
    const [searchFilm, setSearchFilm] = useState('');
    const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-    const { data, isLoading, isError } = useQuery({ 
+    const { data, isLoading, isError, isSuccess } = useQuery({ 
     queryKey: ['films', searchFilm, page ],
     queryFn: () => fetchMovies(searchFilm, page),
    enabled: searchFilm !== "",
@@ -26,10 +26,15 @@ export default function App() {
    setSearchFilm(queryValue);
   setPage(1);
  };
+
+  useEffect(() => {{
+    if(isSuccess && data.results.length === 0){
+toast.error('No movies found for your request.');
+ }}},[isSuccess, data])
+
   const handleMovie = (movie:Movie) => {
   setSelectedMovie(movie);
 };
-
   return(
     <div className={css.app}>
   <Toaster 
@@ -45,7 +50,6 @@ export default function App() {
     onPageChange={setPage}
     />)}
        {data && data.results.length > 0 &&
-     
       (
     <MovieGrid movies={data.results} onSelect={handleMovie}
     />)}
