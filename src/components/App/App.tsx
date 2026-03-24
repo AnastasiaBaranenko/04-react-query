@@ -28,7 +28,7 @@ export default function App() {
  };
 
   useEffect(() => {{
-    if(isSuccess && data.results.length === 0){
+    if(isSuccess && data?.results.length === 0){
 toast.error('No movies found for your request.');
  }}},[isSuccess, data])
 
@@ -45,7 +45,8 @@ toast.error('No movies found for your request.');
         {isLoading && <Loader />}
        {isError && <ErrorMessage/>}
           {data && data.total_pages > 1 &&
-    (<Pagination totalPages={data.total_pages} 
+    (<Pagination 
+      totalPages={data.total_pages} 
       currentPage={page}
     onPageChange={setPage}
     />)}
