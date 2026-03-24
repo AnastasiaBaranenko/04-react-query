@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState} from 'react';
+import { useQuery,keepPreviousData } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import css from './App.module.css';
 import SearchBar from '../SearchBar/SearchBar';
 import { fetchMovies } from '../../services/movieService';
-import type {Movie, MovieResponsePropse} from '../../types/movie';
+import type {Movie} from '../../types/movie';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -15,10 +15,11 @@ export default function App() {
   const [page, setPage] = useState(1);
    const [searchFilm, setSearchFilm] = useState('');
    const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-    const { data, isLoading, isError } = useQuery<MovieResponsePropse>({ 
+    const { data, isLoading, isError } = useQuery({ 
     queryKey: ['films', searchFilm, page ],
     queryFn: () => fetchMovies(searchFilm, page),
    enabled: searchFilm !== "",
+    placeholderData: keepPreviousData,
   });
 
   const handleSearch = (queryValue: string) => {
@@ -43,7 +44,7 @@ export default function App() {
       currentPage={page}
     onPageChange={setPage}
     />)}
-       {data && data.results.length > 1 &&
+       {data && data.results.length > 0 &&
      
       (
     <MovieGrid movies={data.results} onSelect={handleMovie}
